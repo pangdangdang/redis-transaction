@@ -1,7 +1,7 @@
 # redis-transaction
 
 #### Description
-基于SpringBoot的轻量级redis回滚机制，使用栈和ThreadLocal记录业务链的redis操作，发生异常进行回滚
+基于SpringBoot的轻量级redis事务回滚工具，使用栈和ThreadLocal记录业务链的redis操作，发生异常进行回滚
 
 #### Software Architecture
 Software architecture description
