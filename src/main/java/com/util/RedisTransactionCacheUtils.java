@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 @Component
-public class RedisCacheUtils<V> {
+public class RedisTransactionCacheUtils<V> {
 
     @Resource
     private RedissonClient redissonClient;
@@ -184,7 +184,7 @@ public class RedisCacheUtils<V> {
      *
      * @return true 成功 false 失败
      */
-    public boolean stringAddExpireTransaction(String k, V v, Long timeOut, TimeUnit timeUnit) {
+    public boolean stringSetExpireTransaction(String k, V v, Long timeOut, TimeUnit timeUnit) {
         try {
             if (v == null) {
                 return false;
@@ -227,7 +227,7 @@ public class RedisCacheUtils<V> {
      *
      * @return true 成功 false 失败
      */
-    public boolean stringAddTransaction(String k, V v) {
+    public boolean stringSetTransaction(String k, V v) {
         try {
             if (v == null) {
                 return false;

@@ -1,7 +1,7 @@
 package com.core;
 
 import com.annotation.RedisTransaction;
-import com.util.RedisCacheUtils;
+import com.util.RedisTransactionCacheUtils;
 import com.util.RedisOperateUtil;
 import com.util.RedisTransactionUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@ import java.util.Stack;
 public class RedisTransactionAspect {
 
     @Resource
-    private RedisCacheUtils redisCacheUtils;
+    private RedisTransactionCacheUtils redisTransactionCacheUtils;
 
     @Pointcut("@annotation(com.annotation.RedisTransaction)")
     public void transactionPointCut() {
@@ -53,19 +53,19 @@ public class RedisTransactionAspect {
                 switch (redisOperateUtil.getOperateTypeEnum()) {
                     case STRING_SET:
                         if (Objects.nonNull(redisOperateUtil.getPrevValue())) {
-                            redisCacheUtils.stringAdd(redisOperateUtil.getKey(),redisOperateUtil.getPrevValue());
+                            redisTransactionCacheUtils.stringAdd(redisOperateUtil.getKey(),redisOperateUtil.getPrevValue());
                             break;
                         }
-                        redisCacheUtils.stringDelete(redisOperateUtil.getKey());
+                        redisTransactionCacheUtils.stringDelete(redisOperateUtil.getKey());
                         break;
                     case STRING_DELETE:
-                        redisCacheUtils.stringAdd(redisOperateUtil.getKey(), redisOperateUtil.getValue());
+                        redisTransactionCacheUtils.stringAdd(redisOperateUtil.getKey(), redisOperateUtil.getValue());
                         break;
                     case LIST_ADD:
-                        redisCacheUtils.listRemove(redisOperateUtil.getKey(), redisOperateUtil.getValue(),redisTransaction.index());
+                        redisTransactionCacheUtils.listRemove(redisOperateUtil.getKey(), redisOperateUtil.getValue(),redisTransaction.index());
                         break;
                     case LIST_REMOVE:
-                        redisCacheUtils.listAdd(redisOperateUtil.getKey(), redisOperateUtil.getValue());
+                        redisTransactionCacheUtils.listAdd(redisOperateUtil.getKey(), redisOperateUtil.getValue());
                         break;
                     default:
                         break;

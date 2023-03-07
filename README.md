@@ -1,24 +1,42 @@
 # redis-transaction
 
 #### 介绍
-基于SpringBoot的轻量级redis回滚机制，使用栈和ThreadLocal记录业务链的redis操作，发生异常进行回滚
+基于SpringBoot的轻量级redis事务回滚机制，使用栈和ThreadLocal记录业务链的redis操作，发生异常进行回滚
 
 #### 软件架构
-软件架构说明
+SpringBoot
 
-
-#### 安装教程
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
 
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+    1、目前支持链接redis的工具主要是Redisson、RedisTemplate、StringRedisTemplate，默认Redisson
+    
+    2、进行回滚时需要考虑是否要进行查询前镜像，可以通过设置RedisTransactionCommonUtil的QUERY_PREV属性
+    
+    3、需要使用RedisTransactionCacheUtils操作需要回滚的redis数据，此时加入threadlocal
+    
+    
+    使用方式：
+    
+    @Resource
+    private RedisTransactionCacheUtils redisTransactionCacheUtils;
 
+    @RedisTransaction(atuoRemove = true)
+    public void shopAdd(ShopOnlineDTO request) {
+        //业务处理
+        redisTransactionCacheUtils.stringSetTransaction(request.getShopId(),request.getPrice());
+        //业务处理
+        redisTransactionCacheUtils.stringSetTransaction(request.getShopId(),request.getLocation());
+        //业务处理
+    }
+    
+    设置redis客户端为RedisTemplate
+    RedisTransactionCommonUtil.setRedisClient(RedisClientTypeEnum.REDIS_TEMPLATE);
+    
+    设置查询前镜像
+    RedisTransactionCommonUtil.setQueryPrev(true);
+    
+    
 #### 参与贡献
 
 1.  Fork 本仓库
@@ -26,12 +44,3 @@
 3.  提交代码
 4.  新建 Pull Request
 
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
