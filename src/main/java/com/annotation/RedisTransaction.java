@@ -11,4 +11,6 @@ import java.lang.annotation.*;
 public @interface RedisTransaction {
     //是否自动清除RedisTransactionUtil
     boolean atuoRemove() default false;
+    //如果使用RedisTemplate或者StringRedisTemplate操作集合删除，需要设置
+    long index() default 0l;
 }

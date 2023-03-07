@@ -51,14 +51,18 @@ public class RedisTransactionAspect {
             while (!stack.isEmpty()) {
                 redisOperateUtil = stack.pop();
                 switch (redisOperateUtil.getOperateTypeEnum()) {
-                    case STRING_ADD:
+                    case STRING_SET:
+                        if (Objects.nonNull(redisOperateUtil.getPrevValue())) {
+                            redisCacheUtils.stringAdd(redisOperateUtil.getKey(),redisOperateUtil.getPrevValue());
+                            break;
+                        }
                         redisCacheUtils.stringDelete(redisOperateUtil.getKey());
                         break;
                     case STRING_DELETE:
                         redisCacheUtils.stringAdd(redisOperateUtil.getKey(), redisOperateUtil.getValue());
                         break;
                     case LIST_ADD:
-                        redisCacheUtils.listRemove(redisOperateUtil.getKey(), redisOperateUtil.getValue());
+                        redisCacheUtils.listRemove(redisOperateUtil.getKey(), redisOperateUtil.getValue(),redisTransaction.index());
                         break;
                     case LIST_REMOVE:
                         redisCacheUtils.listAdd(redisOperateUtil.getKey(), redisOperateUtil.getValue());

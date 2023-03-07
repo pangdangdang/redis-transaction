@@ -9,16 +9,10 @@ import lombok.Getter;
 @Getter
 public enum RedisOperateTypeEnum {
 
-    STRING_ADD("string", "add"),
+    STRING_SET("string", "add"),
     STRING_DELETE("string", "delete"),
     LIST_ADD("list", "add"),
     LIST_REMOVE("list", "remove"),
-    HASH_ADD("hash", "add"),
-    HASH_REMOVE("hash", "remove"),
-    SET_ADD("set", "add"),
-    SET_REMOVE("set", "remove"),
-    ZSET_ADD("zset", "add"),
-    ZSET_REMOVE("zset", "remove"),
     ;
 
     private String dataType;

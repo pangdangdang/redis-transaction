@@ -15,4 +15,5 @@ public class RedisOperateUtil<T> {
     private RedisOperateTypeEnum operateTypeEnum;
     private String key;
     private T value;
+    private T prevValue;
 }
